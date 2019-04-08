@@ -5,4 +5,9 @@
         android:id="@+id/main_menu_item_filter"
         android:title="Phân loại"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/main_menu_item_add"
+        android:title="Thêm mới"
+        app:showAsAction="always"
+        android:visible="false"/>
 </menu>

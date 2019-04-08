@@ -3,4 +3,24 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="city_array">
+        <item>Hà Nội</item>
+        <item>Đà Nẵng</item>
+        <item>TP. Hồ Chí Minh</item>
+    </string-array>
+    <string-array name="type_array">
+        <item>Nhà ở</item>
+        <item>Cửa hàng kinh doanh</item>
+        <item>Kho thời vụ</item>
+    </string-array>
+    <string-array name="door_direction_array">
+        <item>Đông</item>
+        <item>Tây</item>
+        <item>Nam</item>
+        <item>Bắc</item>
+        <item>Đông Bắc</item>
+        <item>Đông Nam</item>
+        <item>Tây Bắc</item>
+        <item>Tây Nam</item>
+    </string-array>
 </resources>

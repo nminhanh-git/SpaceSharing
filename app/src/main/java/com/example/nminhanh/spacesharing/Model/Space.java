@@ -1,28 +1,33 @@
 package com.example.nminhanh.spacesharing.Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Space implements Serializable {
     private String id;
     private String idChu;
     private String tieuDe;
     private String diaChiPho;
-    private String phuong;
-    private String quan;
-    private String thanhPho;
+    private String phuongId;
+    private String quanId;
+    private String thanhPhoId;
     private double dienTich;
     private double gia;
     private int soPhongNgu;
     private int soPhongVeSinh;
+    private String loai;
     private String huongCua;
-    private String imagePath;
     private String moTa;
     private String thongTinPhapLy;
     private boolean khaDung;
 
 
     public Space() {
+        setId("0");
+        setIdChu("0");
+        setKhaDung(false);
     }
+
 
     public Space(String id,
                  String idChu,
@@ -35,8 +40,8 @@ public class Space implements Serializable {
                  double gia,
                  int soPhongNgu,
                  int soPhongVeSinh,
+                 String loai,
                  String huongCua,
-                 String imagePath,
                  String moTa,
                  String thongTinPhapLy,
                  boolean khaDung
@@ -45,15 +50,15 @@ public class Space implements Serializable {
         this.idChu = idChu;
         this.tieuDe = tieuDe;
         this.diaChiPho = diaChiPho;
-        this.phuong = phuong;
-        this.quan = quan;
-        this.thanhPho = thanhPho;
+        this.phuongId = phuong;
+        this.quanId = quan;
+        this.thanhPhoId = thanhPho;
         this.dienTich = dienTich;
         this.gia = gia;
         this.soPhongNgu = soPhongNgu;
         this.soPhongVeSinh = soPhongVeSinh;
+        this.loai = loai;
         this.huongCua = huongCua;
-        this.imagePath = imagePath;
         this.moTa = moTa;
         this.thongTinPhapLy = thongTinPhapLy;
         this.khaDung = khaDung;
@@ -91,28 +96,28 @@ public class Space implements Serializable {
         this.diaChiPho = diaChiPho;
     }
 
-    public String getPhuong() {
-        return phuong;
+    public String getPhuongId() {
+        return phuongId;
     }
 
-    public void setPhuong(String phuong) {
-        this.phuong = phuong;
+    public void setPhuongId(String phuong) {
+        this.phuongId = phuong;
     }
 
-    public String getQuan() {
-        return quan;
+    public String getQuanId() {
+        return quanId;
     }
 
-    public void setQuan(String quan) {
-        this.quan = quan;
+    public void setQuanId(String quan) {
+        this.quanId = quan;
     }
 
-    public String getThanhPho() {
-        return thanhPho;
+    public String getThanhPhoId() {
+        return thanhPhoId;
     }
 
-    public void setThanhPho(String thanhPho) {
-        this.thanhPho = thanhPho;
+    public void setThanhPhoId(String thanhPho) {
+        this.thanhPhoId = thanhPho;
     }
 
     public double getDienTich() {
@@ -147,20 +152,20 @@ public class Space implements Serializable {
         this.soPhongVeSinh = soPhongVeSinh;
     }
 
+    public String getLoai() {
+        return loai;
+    }
+
+    public void setLoai(String loai) {
+        this.loai = loai;
+    }
+
     public String getHuongCua() {
         return huongCua;
     }
 
     public void setHuongCua(String huongCua) {
         this.huongCua = huongCua;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 
     public String getMoTa() {

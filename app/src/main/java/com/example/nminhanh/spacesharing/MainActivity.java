@@ -1,6 +1,7 @@
 package com.example.nminhanh.spacesharing;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -19,16 +20,21 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.nminhanh.spacesharing.Fragment.AccountFragment;
+import com.example.nminhanh.spacesharing.Fragment.AddAddressFragment;
 import com.example.nminhanh.spacesharing.Fragment.FavoriteFragment;
 import com.example.nminhanh.spacesharing.Fragment.PagerAdapter;
 import com.example.nminhanh.spacesharing.Fragment.SearchFragment;
 import com.example.nminhanh.spacesharing.Fragment.SpaceManagementFragment;
+import com.example.nminhanh.spacesharing.Model.Space;
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+
+    static final int REQUEST_ADD = 1;
 
     Toolbar mToolbar;
     ViewPager mViewPager;
     BottomNavigationView mNavigationView;
+    Menu mOptionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +69,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                         break;
                     case R.id.action_favor:
                         id = 2;
+
                         break;
                     case R.id.action_account:
                         id = 3;
                         break;
                 }
+                invalidateOptionsMenu();
                 mViewPager.setCurrentItem(id, true);
                 return true;
             }
@@ -93,7 +101,30 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        mOptionMenu = menu;
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem filterItem = menu.findItem(R.id.main_menu_item_filter);
+        MenuItem addItem = menu.findItem(R.id.main_menu_item_add);
+        switch (mViewPager.getCurrentItem()) {
+            case 0:
+                filterItem.setVisible(true);
+                addItem.setVisible(false);
+                break;
+            case 1:
+                filterItem.setVisible(false);
+                addItem.setVisible(true);
+                break;
+            case 2:
+            case 3:
+                filterItem.setVisible(false);
+                addItem.setVisible(false);
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -102,6 +133,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             case R.id.main_menu_item_filter:
                 showFilterDialog();
                 break;
+            case R.id.main_menu_item_add:
+                Intent intent = new Intent(MainActivity.this, AddSpaceActivity.class);
+                startActivityForResult(intent, REQUEST_ADD);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,37 +15,40 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/layout_image"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#cecece">
 
-                <ImageButton
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/add_address_recycle_view_image"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_centerInParent="true"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_photo_camera" />
+                    android:layout_height="200dp" />
 
-                <TextView
-                    style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="#c8787878"
+                <Button
+                    android:id="@+id/add_address_btn_add_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_button"
+                    android:drawableLeft="@drawable/ic_photo_camera"
                     android:fontFamily="@font/roboto_reg"
+                    android:padding="10dp"
                     android:text="Thêm ảnh"
-                    android:textAlignment="center"
-                    android:textColor="#fafafa" />
-            </RelativeLayout>
+                    android:textAllCaps="false"
+                    android:textColor="@color/dark_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </android.support.constraint.ConstraintLayout>
 
             <TextView
-                android:id="@+id/image_note"
+                android:id="@+id/add_address_image_note"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_image"
+                android:layout_marginTop="3dp"
                 android:fontFamily="@font/roboto_reg"
                 android:text="Bạn cần phải thêm vào 5 ảnh,\n hiện bạn đã thêm 0/5 ảnh"
                 android:textAlignment="center" />
@@ -54,8 +58,9 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/image_note"
+                android:layout_below="@id/add_address_image_note"
                 android:layout_marginLeft="18dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_reg"
                 android:text="Tiêu đề *"
                 android:textColor="@color/colorPrimary" />
@@ -68,7 +73,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/edit_background_inverse"
-                android:inputType="textMultiLine"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
                 android:padding="10dp"
                 android:textColor="@color/dark_gray" />
 
@@ -80,6 +86,7 @@
                 android:layout_below="@id/add_address_text_title"
                 android:layout_marginLeft="18dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_reg"
                 android:text="Địa chỉ không gian *"
                 android:textColor="@color/colorPrimary" />
@@ -100,6 +107,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
                     android:fontFamily="@font/roboto_reg"
                     android:inputType="textLongMessage"
                     android:text="Địa chỉ *"
@@ -111,22 +119,25 @@
                     android:layout_height="40dp"
                     android:layout_below="@id/add_address_title_address_number"
                     android:background="@drawable/edit_background"
+                    android:imeOptions="actionNext"
                     android:padding="10dp"
-                    android:textColor="@color/dark_gray" />
+                    android:textColor="@color/dark_gray"
+                    android:maxLines="1"/>
 
                 <RelativeLayout
-                    android:id="@+id/dialog_city"
-                    android:layout_width="135dp"
+                    android:id="@+id/layout_city"
+                    android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_below="@id/add_address_text_address_number"
-                    android:layout_alignParentStart="true">
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/title_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Thành phố"
+                        android:text="Thành Phố *"
                         android:textColor="@color/colorPrimary"
                         android:textSize="18sp" />
 
@@ -141,24 +152,26 @@
                             style="@style/Widget.AppCompat.DropDownItem.Spinner"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="10dp"
+                            android:padding="5dp"
                             android:spinnerMode="dropdown" />
                     </LinearLayout>
 
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_width="135dp"
+                    android:id="@+id/layout_district"
+                    android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_below="@id/add_address_text_address_number"
-                    android:layout_alignParentEnd="true">
+                    android:layout_below="@id/layout_city"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/title_district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Quận"
+                        android:text="Quận *"
                         android:textColor="@color/colorPrimary"
                         android:textSize="18sp" />
 
@@ -170,6 +183,40 @@
 
                         <Spinner
                             android:id="@+id/add_address_spinner_district"
+                            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clickable="false"
+                            android:padding="10dp"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_below="@id/layout_district"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/title_ward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Phường *"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/title_ward"
+                        android:background="@drawable/background_spinner">
+
+                        <Spinner
+                            android:id="@+id/add_address_spinner_ward"
                             style="@style/Widget.AppCompat.DropDownItem.Spinner"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

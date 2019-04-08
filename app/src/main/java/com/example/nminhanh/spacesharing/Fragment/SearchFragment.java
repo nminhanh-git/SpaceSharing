@@ -94,30 +94,30 @@ public class SearchFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull final SpaceViewHolder holder, int position, @NonNull Space model) {
                 holder.mTextViewSpaceTitle.setText(model.getTieuDe());
-                holder.mTextViewAddress.setText("phường " + model.getPhuong() + ", " + model.getQuan() + ", " + model.getThanhPho());
+                holder.mTextViewAddress.setText("phường " + model.getPhuongId() + ", " + model.getQuanId() + ", " + model.getThanhPhoId());
                 holder.mTextViewPrice.setText(model.getDienTich() + " - " + model.getGia());
-                if (!model.getImagePath().isEmpty()) {
-                    String imageURl = model.getImagePath();
-                    if (imageURl.startsWith("gs://")) {
-                        StorageReference storageRef = FirebaseStorage.getInstance()
-                                .getReferenceFromUrl(imageURl);
-                        storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
-                                    String downloadUrl = task.getResult().toString();
-                                    Glide.with(holder.mImageView.getContext())
-                                            .load(downloadUrl).into(holder.mImageView);
-                                } else {
-                                    Toast.makeText(holder.mImageView.getContext(), "Error in loading image by Glide", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }else{
-                        Glide.with(holder.mImageView.getContext())
-                                .load(model.getImagePath()).into(holder.mImageView);
-                    }
-                }
+//                if (!model.getImagePath().isEmpty()) {
+//                    String imageURl = model.getImagePath().get(0);
+//                    if (imageURl.startsWith("gs://")) {
+//                        StorageReference storageRef = FirebaseStorage.getInstance()
+//                                .getReferenceFromUrl(imageURl);
+//                        storageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Uri> task) {
+//                                if (task.isSuccessful()) {
+//                                    String downloadUrl = task.getResult().toString();
+//                                    Glide.with(holder.mImageView.getContext())
+//                                            .load(downloadUrl).into(holder.mImageView);
+//                                } else {
+//                                    Toast.makeText(holder.mImageView.getContext(), "Error in loading image by Glide", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
+//                    }else{
+//                        Glide.with(holder.mImageView.getContext())
+//                                .load(model.getImagePath()).into(holder.mImageView);
+//                    }
+//                }
             }
             //TODO: tạo Activity thêm dữ liệu, phải làm Authentication trước
 
