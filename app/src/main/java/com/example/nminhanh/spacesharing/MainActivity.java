@@ -1,45 +1,42 @@
 package com.example.nminhanh.spacesharing;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.example.nminhanh.spacesharing.Fragment.AccountFragment;
-import com.example.nminhanh.spacesharing.Fragment.AddAddressFragment;
-import com.example.nminhanh.spacesharing.Fragment.FavoriteFragment;
-import com.example.nminhanh.spacesharing.Fragment.PagerAdapter;
-import com.example.nminhanh.spacesharing.Fragment.SearchFragment;
-import com.example.nminhanh.spacesharing.Fragment.SpaceManagementFragment;
-import com.example.nminhanh.spacesharing.Model.Space;
+import com.bumptech.glide.Glide;
+import com.example.nminhanh.spacesharing.Fragment.MainPages.PagerAdapter;
+import com.example.nminhanh.spacesharing.Fragment.MainPages.SignOutListener;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SignOutListener {
 
     static final int REQUEST_ADD = 1;
+    private static final int REQUEST_WELCOME = 2;
 
     Toolbar mToolbar;
+    ImageView mImageToolbarLogo;
     ViewPager mViewPager;
     BottomNavigationView mNavigationView;
     Menu mOptionMenu;
+
+    FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         initialize();
 
     }
@@ -49,6 +46,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         mToolbar = findViewById(R.id.main_toolbar);
         this.setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mImageToolbarLogo = mToolbar.findViewById(R.id.main_image_toolbar_logo);
+        Glide.with(this)
+                .asBitmap()
+                .load(R.drawable.logo)
+                .into(mImageToolbarLogo);
 
         //Initialize ViewPager
         mViewPager = findViewById(R.id.main_pager);
@@ -134,8 +136,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 showFilterDialog();
                 break;
             case R.id.main_menu_item_add:
-                Intent intent = new Intent(MainActivity.this, AddSpaceActivity.class);
-                startActivityForResult(intent, REQUEST_ADD);
+                if (mFirebaseAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(MainActivity.this, AddSpaceActivity.class);
+                    startActivityForResult(intent, REQUEST_ADD);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -162,5 +170,16 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 //            }
 //        });
         d.show();
+    }
+
+    @Override
+    public void onSignOut() {
+        Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+        mViewPager.setCurrentItem(0, true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

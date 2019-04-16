@@ -18,13 +18,13 @@
         app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
-            app:contentInsetStart="0dp"
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:minHeight="?attr/actionBarSize"
             android:orientation="horizontal"
-            android:theme="@style/AppTheme.ActionBar">
+            android:theme="@style/AppTheme.ActionBar"
+            app:contentInsetStart="0dp">
 
             <ImageView
                 android:layout_width="120dp"
@@ -34,13 +34,13 @@
     </android.support.design.widget.AppBarLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/image_view_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/welcome_title"
         android:layout_below="@id/appbar_layout"
         android:layout_centerHorizontal="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/welcome_image" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/welcome_title"
@@ -58,8 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/sign_in_up_layout"
-        android:layout_marginBottom="50dp"
-        android:fontFamily="@font/roboto_med"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto_reg"
         android:text="Chia sẻ không gian chưa bao giờ dễ đến thế!" />
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="25dp"
             android:layout_weight="1"
-            android:background="@drawable/background_sign_in_button"
+            android:background="@drawable/button_sign_in_background"
             android:fontFamily="@font/roboto_black"
             android:text="đăng nhập"
             android:textColor="#fff" />
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_weight="1"
-            android:background="@drawable/background_sign_in_button"
+            android:background="@drawable/button_sign_in_background"
             android:fontFamily="@font/roboto_black"
             android:text="đăng ký"
             android:textColor="#fff" />
@@ -97,13 +97,39 @@
         android:id="@+id/welcome_fb_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/welcome_text_view_divider"
         android:background="@drawable/background_fb_button"
         android:drawableLeft="@drawable/facebook_logo_drawble_left_btn"
         android:fontFamily="@font/roboto_black"
         android:paddingLeft="20dp"
         android:text="tiếp tục với facebook"
         android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/welcome_text_view_divider"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/welcome_text_view_no_sign_in"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/roboto_reg"
+        android:text="Hoặc"
+        android:textColor="@color/dark_gray" />
+
+    <TextView
+        android:id="@+id/welcome_text_view_no_sign_in"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="?attr/selectableItemBackground"
+        android:fontFamily="@font/roboto_reg"
+        android:text="Tiếp tục sử dụng mà không cần đăng nhập"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary" />
 
 
 </RelativeLayout>

@@ -1,26 +1,32 @@
 package com.example.nminhanh.spacesharing;
 
-import android.support.v4.app.Fragment;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.manager.SupportRequestManagerFragment;
-import com.example.nminhanh.spacesharing.Fragment.AddAddressFragment;
-import com.example.nminhanh.spacesharing.Fragment.AddDescriptionFragment;
-import com.example.nminhanh.spacesharing.Fragment.AddOtherFragment;
-import com.example.nminhanh.spacesharing.Fragment.AddPagerAdapter;
+import com.example.nminhanh.spacesharing.Fragment.AddSpacePages.AddAddressFragment;
+import com.example.nminhanh.spacesharing.Fragment.AddSpacePages.AddDescriptionFragment;
+import com.example.nminhanh.spacesharing.Fragment.AddSpacePages.AddOtherFragment;
+import com.example.nminhanh.spacesharing.Fragment.AddSpacePages.AddPagerAdapter;
 import com.example.nminhanh.spacesharing.Model.Space;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import github.chenupt.springindicator.SpringIndicator;
 
@@ -32,18 +38,27 @@ public class AddSpaceActivity extends AppCompatActivity implements AddAddressFra
 
     TextView mTextviewNote;
 
-    ViewPager mViewPagerAdd;
+    NonSwipeViewPager mViewPagerAdd;
     SpringIndicator mIndicator;
 
     Space currentSpace;
     ArrayList<String> mImagePath;
-    stepContinueListener listener;
+    StepContinueListener listener;
+    public static final String SPACE_CHILD = "space";
+
+    FirebaseAuth mFirebaseAuth;
+    FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_space);
         currentSpace = new Space();
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        }
         initialize();
     }
 
@@ -59,9 +74,10 @@ public class AddSpaceActivity extends AppCompatActivity implements AddAddressFra
         mTextviewNote.setText(Html.fromHtml(text));
 
         mViewPagerAdd = findViewById(R.id.add_viewpager);
-        List<Fragment> fragmentList = getFragmentList();
-        AddPagerAdapter adapter = new AddPagerAdapter(getSupportFragmentManager(),fragmentList);
+        AddPagerAdapter adapter = new AddPagerAdapter(this, getSupportFragmentManager());
         mViewPagerAdd.setAdapter(adapter);
+        mViewPagerAdd.setSwipingEnabled(false);
+
         mIndicator = findViewById(R.id.add_indicator);
         mIndicator.setViewPager(mViewPagerAdd);
 
@@ -89,23 +105,25 @@ public class AddSpaceActivity extends AppCompatActivity implements AddAddressFra
         mBtnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener = (stepContinueListener) getSupportFragmentManager().getFragments().get(mViewPagerAdd.getCurrentItem());
                 switch (mViewPagerAdd.getCurrentItem()) {
                     case 0:
                         mBtnCancel.setText("Trở về");
                         mBtnContinue.setText("Tiếp tục");
+                        listener = (StepContinueListener) getSupportFragmentManager().getFragments().get(0);
                         listener.onContinue();
                         mViewPagerAdd.setCurrentItem(1);
                         break;
                     case 1:
                         mBtnCancel.setText("Trở về");
                         mBtnContinue.setText("Lưu");
+                        listener = (StepContinueListener) getSupportFragmentManager().getFragments().get(1);
                         listener.onContinue();
                         mViewPagerAdd.setCurrentItem(2);
                         break;
                     case 2:
+                        listener = (StepContinueListener) getSupportFragmentManager().getFragments().get(1);
                         listener.onContinue();
-                        setResult(RESULT_OK);
+                        saveNewSpaceObject(currentSpace);
                         finish();
                         break;
                 }
@@ -113,20 +131,56 @@ public class AddSpaceActivity extends AppCompatActivity implements AddAddressFra
         });
     }
 
-    private List<Fragment> getFragmentList() {
-        List<Fragment> list = new ArrayList<>();
-        return list;
+    private void saveNewSpaceObject(final Space currentSpace) {
+        final DatabaseReference dbReference = FirebaseDatabase.getInstance().getReference();
+        final String[] key = new String[1];
+        dbReference.child(SPACE_CHILD).push().setValue(currentSpace, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    key[0] = databaseReference.getKey();
+                    currentSpace.setId(key[0]);
+                    dbReference.child(SPACE_CHILD).child(key[0]).setValue(currentSpace);
+                    if (mImagePath != null && mImagePath.size() != 0) {
+                        putImageToStorage(key);
+                    }
+                    Toast.makeText(AddSpaceActivity.this, key[0], Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddSpaceActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+    }
+
+    private void putImageToStorage(String[] key) {
+        for (int i = 0; i < mImagePath.size(); i++) {
+            if (!mImagePath.get(i).isEmpty()) {
+                Uri uriPath = Uri.parse(mImagePath.get(i));
+                StorageReference storageRef = FirebaseStorage.getInstance()
+                        .getReference(mFirebaseUser.getUid())
+                        .child(key[0]).child(uriPath.getLastPathSegment());
+                storageRef.putFile(uriPath);
+            }
+        }
     }
 
 
     @Override
     public void onAddressReceived(String title, String addressNumber, String cityId, String districtId, String wardId, ArrayList<String> imagePath) {
+        mImagePath = new ArrayList<>(imagePath);
+        if (mImagePath != null && mImagePath.size() != 0) {
+            currentSpace.setFirstImagePath(Uri.parse(mImagePath.get(0)).getLastPathSegment());
+        }else{
+            currentSpace.setFirstImagePath("không có gì hết á!");
+        }
+        currentSpace.setIdChu(mFirebaseUser.getUid());
         currentSpace.setTieuDe(title);
         currentSpace.setDiaChiPho(addressNumber);
         currentSpace.setThanhPhoId(cityId);
         currentSpace.setQuanId(districtId);
         currentSpace.setPhuongId(wardId);
-        mImagePath = new ArrayList<>(imagePath);
     }
 
     @Override
@@ -138,7 +192,8 @@ public class AddSpaceActivity extends AppCompatActivity implements AddAddressFra
 
 
     @Override
-    public void onOtherReceived(String type, String door, int bedRoom, int bathRoom, String detail) {
+    public void onOtherReceived(String type, String door, int bedRoom, int bathRoom, String
+            detail) {
         currentSpace.setLoai(type);
         currentSpace.setHuongCua(door);
         currentSpace.setSoPhongVeSinh(bathRoom);

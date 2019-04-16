@@ -2,114 +2,183 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_in_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    android:padding="16dp"
-    tools:context=".WelcomeActivity">
-    <!--ToolBar-->
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/transparent"
-        android:focusable="true"
-        app:elevation="0dp">
+    tools:context=".SignInActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/main_toolbar"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/sign_in_btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/appbar_layout"
+            android:layout_alignBottom="@id/appbar_layout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_back" />
+        <!--ToolBar-->
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:minHeight="?attr/actionBarSize"
-            android:orientation="horizontal"
-            android:theme="@style/AppTheme.ActionBar"
-            app:contentInsetStart="0dp">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="-16dp"
+            android:layout_toEndOf="@id/sign_in_btn_back"
+            android:background="@android:color/transparent"
+            android:focusable="true"
+            app:elevation="0dp">
 
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logo" />
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/sign_in_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignTop="@+id/appbar_layout"
+                android:layout_gravity="start"
+                android:minHeight="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:theme="@style/AppTheme.ActionBar"
+                app:contentInsetStart="0dp">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/welcome_title"
-        android:layout_below="@id/appbar_layout"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/sign_in_image" />
+                <ImageView
+                    android:id="@+id/sign_in_logo"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/welcome_title"
-        style="@style/TextAppearance.AppCompat.Display1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/edit_text_sign_in_account"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="@font/roboto_black"
-        android:text="Đăng nhập"
-        android:textColor="#404040" />
+        <ImageView
+            android:id="@+id/image_view_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/welcome_title"
+            android:layout_below="@id/appbar_layout"
+            android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:id="@+id/edit_text_sign_in_account"
+        <TextView
+            android:id="@+id/welcome_title"
+            style="@style/TextAppearance.AppCompat.Display1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/edit_text_sign_in_account"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto_black"
+            android:text="Đăng nhập"
+            android:textColor="#404040" />
+
+
+        <EditText xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/edit_text_sign_in_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/edit_text_sign_in_pass"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/search_bar_background"
+            android:fontFamily="@font/roboto_reg"
+            android:hint="Địa chỉ e-mail hoặc số điện thoại"
+            android:inputType="textEmailAddress"
+            android:minHeight="@dimen/search_bar_height"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#787878" />
+
+
+        <EditText
+            android:id="@+id/edit_text_sign_in_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/sign_in_btn_sign_in"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/search_bar_background"
+            android:fontFamily="@font/roboto_reg"
+            android:hint="Mật khẩu"
+            android:inputType="textPassword"
+            android:minHeight="@dimen/search_bar_height"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#787878" />
+
+        <ImageButton
+            android:id="@+id/sign_up_btn_show_hide_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/edit_text_sign_in_pass"
+            android:layout_alignEnd="@id/edit_text_sign_in_pass"
+            android:layout_alignBottom="@id/edit_text_sign_in_pass"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_show_pass" />
+
+        <Button
+            android:id="@+id/sign_in_btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/sign_in_text_view_forgot_pass"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_sign_in_background"
+            android:fontFamily="@font/roboto_black"
+            android:text="đăng nhập"
+            android:textColor="#fff"
+            android:textSize="@dimen/search_bar_text_size" />
+
+        <TextView
+            android:id="@+id/sign_in_text_view_forgot_pass"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:text="Quên mật khẩu?"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/sign_in_loading_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/edit_text_sign_in_pass"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/search_bar_background"
-        android:fontFamily="@font/roboto_reg"
-        android:hint="Địa chỉ e-mail hoặc số điện thoại"
-        android:minHeight="@dimen/search_bar_height"
-        android:paddingLeft="20dp"
-        android:textColorHint="#787878" />
+        android:layout_height="match_parent"
+        android:background="@color/semi_transparent"
+        android:visibility="gone">
 
-    <EditText
-        android:id="@+id/edit_text_sign_in_pass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_sign_in"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/search_bar_background"
-        android:fontFamily="@font/roboto_reg"
-        android:hint="Mật khẩu"
-        android:minHeight="@dimen/search_bar_height"
-        android:paddingLeft="20dp"
-        android:textColorHint="#787878" />
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="20dp">
 
-    <ImageButton
-        android:id="@+id/btn_show_hide_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/edit_text_sign_in_pass"
-        android:layout_alignEnd="@id/edit_text_sign_in_pass"
-        android:layout_alignBottom="@id/edit_text_sign_in_pass"
-        android:layout_marginEnd="10dp"
-        android:background="?attr/selectableItemBackground"
-        android:src="@drawable/ic_show_pass" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btn_sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_sign_in_forgot_pass"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/background_sign_in_button"
-        android:fontFamily="@font/roboto_black"
-        android:text="đăng nhập"
-        android:textColor="#fff"
-        android:textSize="@dimen/search_bar_text_size" />
+                <ProgressBar
+                    android:id="@+id/loading_progress_bar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp" />
 
-    <TextView
-        android:id="@+id/btn_sign_in_forgot_pass"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="?attr/selectableItemBackground"
-        android:text="Quên mật khẩu?"
-        android:textColor="@color/colorPrimary" />
-
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/loading_progress_bar"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Đang đăng nhập, đợi xíu nha..."
+                    android:textAlignment="center"
+                    android:textColor="#595959" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
 </RelativeLayout>

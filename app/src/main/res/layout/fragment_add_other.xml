@@ -6,7 +6,7 @@
     android:background="#ebebeb"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context=".Fragment.AddOtherFragment">
+    tools:context=".Fragment.AddSpacePages.AddOtherFragment">
 
     <ScrollView
         android:layout_width="match_parent"

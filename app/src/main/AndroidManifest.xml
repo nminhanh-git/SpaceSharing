@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +22,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".AddSpaceActivity"></activity>
+        <activity
+            android:name=".SignInActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".AddSpaceActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:parentActivityName=".WelcomeActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".OTPActivity"></activity>
     </application>
 
 </manifest>

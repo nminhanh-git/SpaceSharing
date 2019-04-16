@@ -13,6 +13,7 @@ public class Space implements Serializable {
     private String thanhPhoId;
     private double dienTich;
     private double gia;
+    private String firstImagePath;
     private int soPhongNgu;
     private int soPhongVeSinh;
     private String loai;
@@ -38,6 +39,7 @@ public class Space implements Serializable {
                  String thanhPho,
                  double dienTich,
                  double gia,
+                 String firstImagePath,
                  int soPhongNgu,
                  int soPhongVeSinh,
                  String loai,
@@ -55,6 +57,7 @@ public class Space implements Serializable {
         this.thanhPhoId = thanhPho;
         this.dienTich = dienTich;
         this.gia = gia;
+        this.firstImagePath = firstImagePath;
         this.soPhongNgu = soPhongNgu;
         this.soPhongVeSinh = soPhongVeSinh;
         this.loai = loai;
@@ -134,6 +137,14 @@ public class Space implements Serializable {
 
     public void setGia(double gia) {
         this.gia = gia;
+    }
+
+    public String getFirstImagePath() {
+        return firstImagePath;
+    }
+
+    public void setFirstImagePath(String firstImagePath) {
+        this.firstImagePath = firstImagePath;
     }
 
     public int getSoPhongNgu() {
