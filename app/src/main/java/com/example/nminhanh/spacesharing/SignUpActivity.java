@@ -1,7 +1,8 @@
 package com.example.nminhanh.spacesharing;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
+import android.content.Intent;
+
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private static final int REQUEST_VERIFY = 1;
     Toolbar mToolbar;
     ImageView mImageViewLogo;
     ImageButton mBtnBack;
@@ -68,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!phone.isEmpty() && mEditPhone.getError() == null) {
-                    verifyNumber(phone);
+                    preparePhoneNumberForVerify(phone);
                 } else {
                     if (mEditPhone.getText().toString().isEmpty()) {
                         mEditPhone.setError("Bạn chưa nhập số điện thoại");
@@ -85,7 +87,11 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void verifyNumber(String phone) {
+    private void preparePhoneNumberForVerify(String phone) {
+        Intent mIntentOtpVerify = new Intent(SignUpActivity.this, OTPActivity.class);
+        mIntentOtpVerify.putExtra("phone number", phone);
+        mIntentOtpVerify.putExtra("command", "sign up");
+        startActivityForResult(mIntentOtpVerify, REQUEST_VERIFY);
     }
 
     private void initializeView() {
@@ -104,5 +110,17 @@ public class SignUpActivity extends AppCompatActivity {
         mBtnContinue = findViewById(R.id.sign_up_btn_continue);
         mImageSignUp = findViewById(R.id.sign_up_image_view);
         Glide.with(this).load(R.drawable.sign_up_image).into(mImageSignUp);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_VERIFY) {
+            if (resultCode == RESULT_OK) {
+                Intent infoIntent = new Intent(SignUpActivity.this, UserInfoActivity.class);
+                infoIntent.putExtra("provider", "sign up");
+                infoIntent.putExtra("user phone", phone);
+                startActivity(infoIntent);
+            }
+        }
     }
 }

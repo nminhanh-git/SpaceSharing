@@ -9,6 +9,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:fontFamily">@font/roboto_reg</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar" >
@@ -17,4 +18,7 @@
 
     </style>
 
+    <style name="AppTheme.OtpView" parent="OtpWidget.OtpView">
+        <item name="android:gravity">center_horizontal</item>
+    </style>
 </resources>

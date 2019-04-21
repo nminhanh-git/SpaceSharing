@@ -23,7 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:background="?attr/selectableItemBackground"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back" />
         <!--ToolBar-->
         <android.support.design.widget.AppBarLayout
@@ -79,106 +79,34 @@
             android:id="@+id/edit_text_sign_in_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/edit_text_sign_in_pass"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/search_bar_background"
-            android:fontFamily="@font/roboto_reg"
-            android:hint="Địa chỉ e-mail hoặc số điện thoại"
-            android:inputType="textEmailAddress"
-            android:minHeight="@dimen/search_bar_height"
-            android:paddingLeft="20dp"
-            android:paddingRight="10dp"
-            android:textColorHint="#787878" />
-
-
-        <EditText
-            android:id="@+id/edit_text_sign_in_pass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_above="@id/sign_in_btn_sign_in"
             android:layout_marginBottom="10dp"
             android:background="@drawable/search_bar_background"
             android:fontFamily="@font/roboto_reg"
-            android:hint="Mật khẩu"
-            android:inputType="textPassword"
+            android:hint="Số điện thoại"
+            android:inputType="textEmailAddress"
+            android:maxLength="10"
             android:minHeight="@dimen/search_bar_height"
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
             android:textColorHint="#787878" />
 
-        <ImageButton
-            android:id="@+id/sign_up_btn_show_hide_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/edit_text_sign_in_pass"
-            android:layout_alignEnd="@id/edit_text_sign_in_pass"
-            android:layout_alignBottom="@id/edit_text_sign_in_pass"
-            android:layout_marginEnd="10dp"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_show_pass" />
 
         <Button
             android:id="@+id/sign_in_btn_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/sign_in_text_view_forgot_pass"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_sign_in_background"
             android:fontFamily="@font/roboto_black"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:text="đăng nhập"
             android:textColor="#fff"
             android:textSize="@dimen/search_bar_text_size" />
 
-        <TextView
-            android:id="@+id/sign_in_text_view_forgot_pass"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:text="Quên mật khẩu?"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/sign_in_loading_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/semi_transparent"
-        android:visibility="gone">
-
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            app:cardCornerRadius="20dp">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ProgressBar
-                    android:id="@+id/loading_progress_bar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp" />
-
-                <TextView
-                    style="@style/TextAppearance.AppCompat.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/loading_progress_bar"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="20dp"
-                    android:text="Đang đăng nhập, đợi xíu nha..."
-                    android:textAlignment="center"
-                    android:textColor="#595959" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
+        <include
+            android:id="@+id/sign_in_loading_layout"
+            layout="@layout/progress_bar_layout" />
     </RelativeLayout>
 </RelativeLayout>

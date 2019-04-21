@@ -16,7 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.nminhanh.spacesharing.AddressUtils;
+import com.example.nminhanh.spacesharing.Utils.AddressUtils;
 import com.example.nminhanh.spacesharing.Model.Space;
 import com.example.nminhanh.spacesharing.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.MainPages.AccountFragment">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -33,35 +32,41 @@
                     app:civ_border_color="#ffff"
                     app:civ_circle_background_color="#ffff" />
 
-                <TextView
-                    android:id="@+id/account_text_view_name"
-                    style="@style/TextAppearance.AppCompat.Display1"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/account_image"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="Trần Văn A"
-                    android:textColor="#595959" />
+                    android:layout_alignTop="@id/account_image"
+                    android:layout_alignBottom="@id/account_image"
+                    android:layout_toEndOf="@id/account_image">
 
-                <TextView
-                    android:id="@+id/account_text_view_email"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/account_text_view_name"
-                    android:layout_toEndOf="@id/account_image"
-                    android:fontFamily="@font/roboto_reg"
-                    android:text="atranvan@gmail.com" />
+                    <TextView
+                        android:id="@+id/account_text_view_name"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Trần Văn A"
+                        android:textColor="#595959" />
 
-                <TextView
-                    android:id="@+id/account_text_view_phone"
-                    style="@style/TextAppearance.AppCompat.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/account_text_view_email"
-                    android:layout_toEndOf="@id/account_image"
-                    android:fontFamily="@font/roboto_reg"
-                    android:text="0943223856" />
+                    <TextView
+                        android:id="@+id/account_text_view_email"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:fontFamily="@font/roboto_reg"
+                        android:text="atranvan@gmail.com" />
+
+                    <TextView
+                        android:id="@+id/account_text_view_phone"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:fontFamily="@font/roboto_reg"
+                        android:text="0943223856" />
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/account_button_edit_profile"
@@ -70,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:fontFamily="@font/roboto_reg"
                     android:gravity="bottom"
                     android:text="Chỉnh sửa"
@@ -97,19 +102,20 @@
                     android:src="@drawable/facebook_logo_colored" />
 
                 <TextView
-                    android:id="@+id/account_text_view_intro"
+                    android:id="@+id/account_facebook_text_view_intro"
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/account_facebook_image"
                     android:fontFamily="@font/roboto_reg"
-                    android:text="Kết nối với Facebook để việc chia sẻ thông tin trở nên dễ dàng hơn!" />
+                    android:text="@string/fragment_account_facebook_into_string" />
 
                 <TextView
-                    style="@style/TextAppearance.AppCompat.Display1"
+                    android:id="@+id/account_facebook_text_view_name"
+                    style="@style/TextAppearance.AppCompat.Headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/account_text_view_intro"
+                    android:layout_below="@id/account_facebook_text_view_intro"
                     android:layout_toEndOf="@id/account_facebook_image"
                     android:fontFamily="@font/roboto_bold"
                     android:text="Trần Văn A"
@@ -124,13 +130,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:fontFamily="@font/roboto_reg"
                     android:gravity="bottom"
                     android:paddingEnd="8dp"
                     android:text="Kết nối ngay"
                     android:textAllCaps="false"
-                    android:textColor="#385c8d" />
+                    android:textColor="@color/facebook_color" />
             </RelativeLayout>
             <!--Other setting-->
             <RelativeLayout
@@ -147,7 +153,7 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:drawableLeft="@drawable/ic_language"
                     android:drawablePadding="20dp"
                     android:drawableTint="@color/dark_gray"
@@ -172,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/account_divider_language"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:drawableLeft="@drawable/ic_password"
                     android:drawablePadding="20dp"
                     android:drawableTint="@color/dark_gray"
@@ -197,7 +203,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/account_divider_password"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:drawableLeft="@drawable/ic_policy"
                     android:drawablePadding="20dp"
                     android:drawableTint="@color/dark_gray"
@@ -222,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/account_divider_policy"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:drawableLeft="@drawable/ic_star"
                     android:drawablePadding="20dp"
                     android:drawableTint="@color/dark_gray"
@@ -243,6 +249,7 @@
                 android:background="@drawable/button_sign_out_background"
                 android:drawableRight="@drawable/ic_sign_out"
                 android:fontFamily="@font/roboto_bold"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:gravity="start|center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -256,16 +263,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/account_group_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-30dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_people"
-            android:layout_marginBottom="-30dp"/>
+            android:src="@drawable/ic_people" />
 
         <TextView
             android:id="@+id/account_text_view_recommend_login"
@@ -278,17 +286,20 @@
             android:text="Hãy đăng nhập để có thể chia sẻ những không gian mà mình có nhé!"
             android:textAlignment="center"
             android:textColor="@color/dark_gray" />
+
         <Button
             android:id="@+id/account_button_sign_in"
+            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Inverse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/account_text_view_recommend_login"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:background="@drawable/button_sign_out_background"
-            android:text="Đăng nhập ngay"
-            android:padding="10dp"
-            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Inverse"
             android:fontFamily="@font/roboto_bold"
-            android:layout_marginTop="20dp"/>
+            android:padding="10dp"
+            android:text="Đăng nhập ngay" />
     </RelativeLayout>
+
+
 </FrameLayout>

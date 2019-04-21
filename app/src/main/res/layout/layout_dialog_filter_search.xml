@@ -93,28 +93,28 @@
         android:layout_below="@id/divider_line" />
 
     <Button
-        android:clickable="true"
         android:id="@+id/filter_dialog_ok"
-        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-15dp"
+        android:layout_toStartOf="@id/filter_dialog_cancel"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:fontFamily="@font/roboto_bold"
         android:text="Phân loại"
-        android:layout_toStartOf="@id/filter_dialog_cancel"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="-15dp"/>
+        android:textColor="@color/colorPrimary" />
 
     <Button
-        android:clickable="true"
         android:id="@+id/filter_dialog_cancel"
-        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-15dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:fontFamily="@font/roboto_bold"
         android:text="HỦY bỏ"
-        android:layout_alignParentEnd="true"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="-15dp"/>
+        android:textColor="@color/colorPrimary" />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.nminhanh.spacesharing;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,15 +12,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.nminhanh.spacesharing.Fragment.MainPages.PagerAdapter;
+import com.example.nminhanh.spacesharing.Fragment.MainPages.ShowFacebookLoadingListener;
 import com.example.nminhanh.spacesharing.Fragment.MainPages.SignOutListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SignOutListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, SignOutListener, ShowFacebookLoadingListener {
 
     static final int REQUEST_ADD = 1;
     private static final int REQUEST_WELCOME = 2;
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     ViewPager mViewPager;
     BottomNavigationView mNavigationView;
     Menu mOptionMenu;
+    RelativeLayout mLayoutFacebookLoading;
+    ImageView mImageFacebookLoading;
 
     FirebaseAuth mFirebaseAuth;
 
@@ -36,9 +44,9 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mFirebaseAuth = FirebaseAuth.getInstance();
         initialize();
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     void initialize() {
@@ -83,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             }
         });
         mViewPager.setOnPageChangeListener(this);
+
+        mLayoutFacebookLoading = findViewById(R.id.account_facebook_loading);
+        mImageFacebookLoading = findViewById(R.id.loading_image);
+        Glide.with(this).load("https://media.giphy.com/media/eBb2W1OYVHou9l6W7N/giphy.gif").into(mImageFacebookLoading);
     }
 
     @Override
@@ -151,25 +163,25 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private void showFilterDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
-        final AlertDialog d = builder.setView(inflater.inflate(R.layout.layout_dialog_filter_search, null))
-                .create();
-//        Button mButtonCancel = d.findViewById(R.id.filter_dialog_cancel);
-//        Button mButtonOK = d.findViewById(R.id.filter_dialog_ok);
-//
-//        mButtonCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                d.cancel();
-//            }
-//        });
-//
-//        mButtonOK.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-        d.show();
+        View mDialogView = inflater.inflate(R.layout.layout_dialog_filter_search, null);
+        Button mButtonCancel = mDialogView.findViewById(R.id.filter_dialog_cancel);
+        Button mButtonOK = mDialogView.findViewById(R.id.filter_dialog_ok);
+        final AlertDialog mDialog = builder.setView(mDialogView).create();
+
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+
+        mButtonOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Phân loại", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mDialog.show();
     }
 
     @Override
@@ -181,5 +193,15 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onShowingFacebookLoading() {
+        mLayoutFacebookLoading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onHidingFacebookLoading() {
+        mLayoutFacebookLoading.setVisibility(View.GONE);
     }
 }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".MainActivity">
     <!--ToolBar-->
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
@@ -45,6 +45,7 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_view"
+        style="@style/Widget.Design.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -55,5 +56,10 @@
         app:itemTextColor="@color/navigation_color_selector"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_navigation_menu" />
+
+    <include
+        android:id="@+id/account_facebook_loading"
+        layout="@layout/facebook_loading_layout"
+        android:visibility="gone" />
 
 </RelativeLayout>

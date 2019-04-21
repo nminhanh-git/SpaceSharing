@@ -26,7 +26,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.nminhanh.spacesharing.AddressUtils;
+import com.example.nminhanh.spacesharing.Utils.AddressUtils;
 import com.example.nminhanh.spacesharing.Model.City;
 import com.example.nminhanh.spacesharing.Model.District;
 import com.example.nminhanh.spacesharing.Model.Ward;

@@ -3,6 +3,7 @@ package com.example.nminhanh.spacesharing;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,12 +27,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {
+    private static final int REQUEST_SIGN_IN = 1;
     Toolbar mToolbar;
     ImageView mImageViewSignIn;
     EditText mEditTextAccount;
-    EditText mEditTextPassword;
     Button mButtonSignIn;
-    ImageButton mImgButtonShowPass;
     TextView mTextViewforgetPassword;
     RelativeLayout mLayoutLoading;
     RelativeLayout mLayoutSignIn;
@@ -39,9 +39,6 @@ public class SignInActivity extends AppCompatActivity {
     ImageView mImageLogo;
 
     String userName = "";
-    String password = "";
-    boolean isShowingPassword = false;
-    boolean isPhoneNumber = false;
     boolean isSignInBtnClicked = false;
 
     FirebaseAuth mFirebaseAuth;
@@ -71,95 +68,25 @@ public class SignInActivity extends AppCompatActivity {
                 String res = mEditTextAccount.getText().toString();
                 if (!res.equals("")) {
                     userName = res;
-                    if (Character.isLetter(userName.charAt(0))) {
-                        mEditTextPassword.setVisibility(View.VISIBLE);
-                        if (mEditTextPassword.getError() == null) {
-                            mImgButtonShowPass.setVisibility(View.VISIBLE);
-                        }
-                        mTextViewforgetPassword.setVisibility(View.VISIBLE);
-                        if (!userName.contains("@")) {
-                            mEditTextAccount.setError("Bạn nhập E-mail chưa đúng định dạng");
-                        } else {
-                            mEditTextAccount.setError(null);
-                            isPhoneNumber = false;
-                        }
-                    } else if (Character.isDigit(userName.charAt(0))) {
-                        mEditTextPassword.setVisibility(View.GONE);
-                        mImgButtonShowPass.setVisibility(View.GONE);
-                        mTextViewforgetPassword.setVisibility(View.INVISIBLE);
-                        if (userName.length() != 10) {
-                            mEditTextAccount.setError("Bạn nhập số điện thoại chưa đúng định dạng");
-                        } else {
-                            mEditTextAccount.setError(null);
-                            isPhoneNumber = true;
-                        }
+                    if (userName.length() != 10) {
+                        mEditTextAccount.setError("Bạn nhập số điện thoại chưa đúng định dạng");
+                    } else {
+                        mEditTextAccount.setError(null);
                     }
                 }
             }
         });
 
-        mEditTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.equals("")) {
-                    password = s.toString();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!password.isEmpty() && isSignInBtnClicked) {
-                    mEditTextPassword.setError(null);
-                    mImgButtonShowPass.setVisibility(View.VISIBLE);
-                    isSignInBtnClicked = false;
-                }
-            }
-        });
-
-        mImgButtonShowPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isShowingPassword) {
-                    mEditTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    isShowingPassword = true;
-                } else {
-                    mEditTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    isShowingPassword = false;
-                }
-                mEditTextPassword.setSelection(mEditTextPassword.length());
-                Typeface mTypeface = ResourcesCompat.getFont(SignInActivity.this, R.font.roboto_reg);
-                mEditTextPassword.setTypeface(mTypeface);
-            }
-        });
 
         mButtonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isSignInBtnClicked = true;
-                if (!(userName.isEmpty() || password.isEmpty())
-                        && mEditTextAccount.getError() == null && mEditTextPassword.getError() == null) {
+                if (!userName.isEmpty() && mEditTextAccount.getError() == null) {
                     signIn();
                 } else {
-                    if (userName.isEmpty()) {
-                        mEditTextAccount.setError("Bạn chưa nhập e-mail hoặc số điện thoại");
-                    }
-                    if (!isPhoneNumber && password.isEmpty()) {
-                        mEditTextPassword.setError("Bạn chưa nhập mật khẩu");
-                        mImgButtonShowPass.setVisibility(View.GONE);
-                    }
+                    mEditTextAccount.setError("Bạn chưa nhập số điện thoại");
                 }
-            }
-        });
-
-        mTextViewforgetPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(SignInActivity.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -183,34 +110,27 @@ public class SignInActivity extends AppCompatActivity {
         mImageViewSignIn = findViewById(R.id.image_view_sign_in);
         Glide.with(this).load(R.drawable.sign_in_image).into(mImageViewSignIn);
         mEditTextAccount = findViewById(R.id.edit_text_sign_in_account);
-        mEditTextPassword = findViewById(R.id.edit_text_sign_in_pass);
         mButtonSignIn = findViewById(R.id.sign_in_btn_sign_in);
-        mImgButtonShowPass = findViewById(R.id.sign_up_btn_show_hide_password);
-        mTextViewforgetPassword = findViewById(R.id.sign_in_text_view_forgot_pass);
         mLayoutLoading = findViewById(R.id.sign_in_loading_layout);
         mBtnBack = findViewById(R.id.sign_in_btn_back);
     }
 
     private void signIn() {
-        mLayoutLoading.setVisibility(View.VISIBLE);
-        if (!isPhoneNumber) {
-            mFirebaseAuth.signInWithEmailAndPassword(userName, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                mLayoutLoading.setVisibility(View.GONE);
-                                Intent goToMainActivityIntent = new Intent(SignInActivity.this, MainActivity.class);
-                                startActivity(goToMainActivityIntent);
-                                finish();
-                            } else {
-                                mLayoutLoading.setVisibility(View.GONE);
-                                Toast.makeText(SignInActivity.this, "Đăng nhập thất bại. Tài khoản không tồn tại!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        } else {
+        Intent OtpIntent = new Intent(SignInActivity.this, OTPActivity.class);
+        OtpIntent.putExtra("command", "sign in");
+        OtpIntent.putExtra("phone number", userName);
+        startActivityForResult(OtpIntent, REQUEST_SIGN_IN);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                mLayoutLoading.setVisibility(View.GONE);
+                Intent goToMainActivityIntent = new Intent(SignInActivity.this, MainActivity.class);
+                startActivity(goToMainActivityIntent);
+                finish();
+            }
         }
     }
 }
