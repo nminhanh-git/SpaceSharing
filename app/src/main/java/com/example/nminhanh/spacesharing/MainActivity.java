@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     Menu mOptionMenu;
     RelativeLayout mLayoutFacebookLoading;
     ImageView mImageFacebookLoading;
-
     FirebaseAuth mFirebaseAuth;
 
     @Override
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 switch (menuItem.getItemId()) {
                     case R.id.action_search:
                         id = 0;
+
                         break;
                     case R.id.action_space:
                         id = 1;

@@ -136,13 +136,14 @@
                 android:id="@+id/user_info_image_view_verified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_check"
-                android:layout_alignEnd="@id/user_info_edit_text_phone"
-                android:layout_marginEnd="15dp"
                 android:layout_alignTop="@id/user_info_edit_text_phone"
+                android:layout_alignEnd="@id/user_info_edit_text_phone"
                 android:layout_alignBottom="@id/user_info_edit_text_phone"
-                android:visibility="gone"/>
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_check"
+                android:visibility="gone" />
         </RelativeLayout>
+
     </LinearLayout>
 
     <Button

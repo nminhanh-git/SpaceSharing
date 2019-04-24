@@ -1,7 +1,10 @@
 package com.example.nminhanh.spacesharing;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -19,8 +26,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class UserInfoActivity extends AppCompatActivity {
 
     private static final int REQUEST_VERIFY_PHONE_NUMBER = 1;
+    private static final int REQUEST_UPDATE_PHONE_NUMBER = 2;
     Toolbar mToolbar;
     ImageView mImageViewLogo;
+    TextView mTextViewSubtile;
     EditText mEditName;
     EditText mEditMail;
     EditText mEditPhone;
@@ -32,6 +41,7 @@ public class UserInfoActivity extends AppCompatActivity {
     String mName = "";
     String mMail = "";
     String mPhone = "";
+    String mOldPhone = "";
     String mProvider = "";
 
     FirebaseAuth mFirebaseAuth;
@@ -51,6 +61,8 @@ public class UserInfoActivity extends AppCompatActivity {
         mName = mIntent.getStringExtra("user name");
         mMail = mIntent.getStringExtra("user mail");
         mPhone = mIntent.getStringExtra("user phone");
+        mPhone = mPhone.replace("+84", "0");
+        mOldPhone = mPhone;
         mProvider = mIntent.getStringExtra("provider");
         setupUI();
 
@@ -87,17 +99,17 @@ public class UserInfoActivity extends AppCompatActivity {
         mBtnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String request = "";
+
                 Intent verifyIntent = new Intent(UserInfoActivity.this, OTPActivity.class);
                 verifyIntent.putExtra("phone number", mPhone);
-                if(mProvider.equalsIgnoreCase("facebook")) {
+                if (mProvider.equalsIgnoreCase("facebook")) {
                     verifyIntent.putExtra("command", "verify");
+                    startActivityForResult(verifyIntent, REQUEST_VERIFY_PHONE_NUMBER);
                 }
-                if(mProvider.equalsIgnoreCase("account management")){
+                if (mProvider.equalsIgnoreCase("account management")) {
                     verifyIntent.putExtra("command", "edit");
-
+                    startActivityForResult(verifyIntent, REQUEST_UPDATE_PHONE_NUMBER);
                 }
-                startActivityForResult(verifyIntent, REQUEST_VERIFY_PHONE_NUMBER);
             }
         });
 
@@ -112,6 +124,24 @@ public class UserInfoActivity extends AppCompatActivity {
             mEditPhone.setEnabled(false);
             mBtnVerify.setVisibility(View.GONE);
             mImageViewVerified.setVisibility(View.VISIBLE);
+        }
+        if (mProvider.equalsIgnoreCase("account management")) {
+            mBtnVerify.setVisibility(View.GONE);
+            mImageViewVerified.setVisibility(View.VISIBLE);
+            isPhoneNumberVerified = true;
+            mTextViewSubtile.setText("Thay đổi thông tin cá nhân của bạn.");
+
+            AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this)
+                    .setTitle("Thay đổi thông tin cá nhân")
+                    .setMessage("Lưu ý rằng số điện thoại mới, sau khi được xác thực, sẽ ngay lập tức được cập nhật thành số điện thoại của tài khoản.")
+                    .setPositiveButton("Tôi đã hiểu", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog userPhoneNumberDialog = mDialogBuilder.create();
+            userPhoneNumberDialog.show();
         }
         mEditName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -173,15 +203,26 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (mEditPhone.getText().toString().isEmpty()) {
+                    mImageViewVerified.setVisibility(View.GONE);
                     mEditPhone.setError("Bạn chưa nhập số điện thoại");
                     mBtnVerify.setVisibility(View.GONE);
                 } else {
                     if (mEditPhone.getText().toString().length() != 10) {
                         mEditPhone.setError("Bạn chưa nhập số điện thoại đúng định dạng");
                         mBtnVerify.setVisibility(View.GONE);
+                        mImageViewVerified.setVisibility(View.GONE);
                     } else {
                         mEditPhone.setError(null);
-                        mBtnVerify.setVisibility(View.VISIBLE);
+                        if (mProvider.equalsIgnoreCase("account management")
+                                && mPhone.equalsIgnoreCase(mOldPhone)) {
+                            mBtnVerify.setVisibility(View.GONE);
+                            mImageViewVerified.setVisibility(View.VISIBLE);
+                            isPhoneNumberVerified = true;
+                        } else {
+                            mBtnVerify.setVisibility(View.VISIBLE);
+                            mImageViewVerified.setVisibility(View.GONE);
+                            isPhoneNumberVerified = false;
+                        }
                     }
                 }
             }
@@ -189,13 +230,21 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void UpdateUserInfo() {
-        mCurrentUser.updateEmail(mMail);
+        mCurrentUser.updateEmail(mMail).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(UserInfoActivity.this, "update mail thành công", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(UserInfoActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         UserProfileChangeRequest profileUpdateRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(mName)
                 .build();
         mCurrentUser.updateProfile(profileUpdateRequest);
     }
-
 
     private void initializeView() {
         mToolbar = findViewById(R.id.user_info_toolbar);
@@ -204,6 +253,7 @@ public class UserInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mImageViewLogo = mToolbar.findViewById(R.id.user_info_logo);
 
+        mTextViewSubtile = findViewById(R.id.user_info_subtitle);
         mEditName = findViewById(R.id.user_info_edit_text_name);
         mEditMail = findViewById(R.id.user_info_mail);
         mEditPhone = findViewById(R.id.user_info_edit_text_phone);
@@ -215,7 +265,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_VERIFY_PHONE_NUMBER) {
+        if (requestCode == REQUEST_VERIFY_PHONE_NUMBER ||
+                requestCode == REQUEST_UPDATE_PHONE_NUMBER) {
             if (resultCode == RESULT_OK) {
                 mBtnVerify.setVisibility(View.GONE);
                 mImageViewVerified.setVisibility(View.VISIBLE);

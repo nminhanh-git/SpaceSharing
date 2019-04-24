@@ -206,11 +206,6 @@ public class OTPActivity extends AppCompatActivity {
         });
     }
 
-    private void updateWithPhoneAuthCredential(PhoneAuthCredential mPhoneAuthCredential) {
-
-    }
-
-
     private void initializeView() {
         mToolbar = findViewById(R.id.otp_toolbar);
         setSupportActionBar(mToolbar);
@@ -287,6 +282,29 @@ public class OTPActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            setResult(RESULT_OK);
+                            finish();
+                        } else {
+                            if (task.getException().getMessage().equalsIgnoreCase(getString(R.string.otp_phone_auth_error_wrong_code_string))) {
+                                Toast.makeText(OTPActivity.this, "Mã xác nhận không đúng. Vui lòng nhập lại", Toast.LENGTH_SHORT).show();
+                            } else if (task.getException().getMessage().equalsIgnoreCase(getString(R.string.otp_phone_auth_error_linked_credential_string))) {
+                                Log.d(TAG, task.getException().getMessage());
+                                Intent intent = new Intent();
+                                intent.putExtra("result from event", "linking error");
+                                setResult(RESULT_CANCELED, intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateWithPhoneAuthCredential(PhoneAuthCredential mPhoneAuthCredential) {
+        mCurrentUser.updatePhoneNumber(mPhoneAuthCredential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             setResult(RESULT_OK);
                             finish();

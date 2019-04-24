@@ -170,25 +170,27 @@ public class AccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "registerCallback:onSuccess");
-                LinkWithFacebookAccount(loginResult.getAccessToken());
+        if (!isLinkedWithFacebook()) {
+            LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.d(TAG, "registerCallback:onSuccess");
+                    LinkWithFacebookAccount(loginResult.getAccessToken());
 
-            }
+                }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "registerCallback:onCancel");
+                @Override
+                public void onCancel() {
+                    Log.d(TAG, "registerCallback:onCancel");
+                    mShowLoadingListener.onHidingFacebookLoading();
+                }
 
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "registerCallback:onError", error);
-            }
-        });
+                @Override
+                public void onError(FacebookException error) {
+                    Log.d(TAG, "registerCallback:onError", error);
+                }
+            });
+        }
     }
 
     private void LinkWithFacebookAccount(AccessToken accessToken) {
@@ -202,6 +204,18 @@ public class AccountFragment extends Fragment {
                     updateUIWithUserInfo();
                 } else {
                     Log.d(TAG, task.getException().getMessage());
+                    mShowLoadingListener.onHidingFacebookLoading();
+                    AlertDialog mFacebookErrorDialog = new AlertDialog.Builder(getContext())
+                            .setIcon(R.drawable.facebook_logo_colored)
+                            .setTitle("Lỗi khi liên kết tài khoản Facebook")
+                            .setMessage("Tài khoản Facebook hiện tại đã liên kết với một ứng dụng khác, vui lòng đăng xuất bằng ứng dụng Facebook và thử lại bằng một tài khoản khác")
+                            .setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create();
+                    mFacebookErrorDialog.show();
                 }
             }
         });
